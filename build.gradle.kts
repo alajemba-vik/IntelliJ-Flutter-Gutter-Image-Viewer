@@ -1,15 +1,16 @@
 import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.nio.file.Files
 import java.nio.file.Paths
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.10"
-    id("org.jetbrains.intellij.platform") version "2.2.1"
+    id("org.jetbrains.kotlin.jvm") version "2.3.0"
+    id("org.jetbrains.intellij.platform") version "2.11.0"
 }
 
 group = "com.alaje.intellijplugins"
-version = "1.4.5"
+version = "1.4.6"
 
 repositories {
     mavenCentral()
@@ -21,9 +22,9 @@ repositories {
 dependencies {
     implementation(files("libs/svgSalamander-1.1.4.jar"))
     intellijPlatform {
-        intellijIdeaCommunity("2025.1")
+        intellijIdeaUltimate("2025.3")
         // Must be compatible with IntelliJ version
-        plugins("Dart:251.23774.318")
+        plugins("Dart:503.0.0")
         bundledPlugins("com.intellij.java", "org.jetbrains.kotlin")
         pluginVerifier()
     }
@@ -34,8 +35,8 @@ intellijPlatform {
 
     pluginConfiguration {
         ideaVersion {
-            sinceBuild = "251.23774.435"
-            untilBuild = "251.*"
+            sinceBuild = "253.28294"
+            untilBuild = "253.*"
         }
         val changeLogFile = Paths.get("CHANGELOG.md")
         changeNotes = Files.readString(changeLogFile)
@@ -60,7 +61,9 @@ tasks {
     }
 
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = jvmVersion
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
     }
 }
 
